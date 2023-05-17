@@ -1,10 +1,18 @@
-function TodoItem(props){
+import './TodoItem.css';
+
+function TodoItem({ text, completed}){
     return (
-      <li>
-        <span>V</span>
-        <p>{props.text}</p>
-        <span>X</span>
-      </li>
+    <li className="todo-item">
+      <button
+        /* onClick={onComplete} */
+        className={`check ${completed && "check--active"}`}
+      ></button>
+      <p>{text}</p>
+      <button 
+        /* onClick={onDelete} */ 
+        className="close-item"
+      ></button>
+    </li>
     );
   }
 
