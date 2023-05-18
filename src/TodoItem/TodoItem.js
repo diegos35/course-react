@@ -1,15 +1,15 @@
 import './TodoItem.css';
 
-function TodoItem({ text, completed}){
+function TodoItem({ text, completed, onComplete,onDelete}){
     return (
     <li className="todo-item">
       <button
-        /* onClick={onComplete} */
+        onClick={onComplete}
         className={`check ${completed && "check--active"}`}
       ></button>
       <p>{text}</p>
       <button 
-        /* onClick={onDelete} */ 
+        onClick={onDelete} 
         className="close-item"
       ></button>
     </li>

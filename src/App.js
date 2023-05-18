@@ -34,7 +34,27 @@ function App() {
       return todoText.includes(searchText.toLocaleLowerCase());
     }
   )
-    console.log(searchTodos)
+  console.log(searchTodos)
+  
+
+  const completeTodo = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text ==  text);
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
+    setTodos(newTodos);
+  };
+
+  const onDelete = (text) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.text ==  text);
+    newTodos.splice(todoIndex,1)
+    setTodos(newTodos);
+  }
+
+ /*  const onDelete = (text) => {
+    const newTodos = todos.filter((todo) => todo.text != text);
+    setTodos(newTodos);
+  }; */
 
   return (
       <>
@@ -52,6 +72,8 @@ function App() {
                 key={todo.text}
                 text={todo.text}
                 completed={todo.completed}
+                onComplete={() => completeTodo(todo.text)} //solo se va a ejecutar cuando suceda el evento
+                onDelete={() =>{onDelete(todo.text)}}
               />
           ))
           }
