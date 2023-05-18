@@ -20,11 +20,21 @@ function App() {
    const [searchValue, setSearchValue] =  React.useState('');//el actulizador es setSearchValue
    //console.log('los usuarios buscan todos de '+ searchValue); 
   
-   const completedTodos = todos.filter(
+  const completedTodos = todos.filter(
       todo => !!todo.completed
     ).length;
-   const totalTodos = todos.length; 
+  const totalTodos = todos.length; 
+  
+  //estado derivado de todos
+  const searchTodos = todos.filter(
+    (todo) => {
+      const todoText = todo.text.toLocaleLowerCase();
+      const searchText = searchValue.toLocaleLowerCase();
 
+      return todoText.includes(searchText.toLocaleLowerCase());
+    }
+  )
+    console.log(searchTodos)
 
   return (
       <>
@@ -37,7 +47,7 @@ function App() {
         />
 
         <TodoList>
-          { defaultTodos.map((todo) =>( 
+          { searchTodos.map((todo) =>( 
               <TodoItem 
                 key={todo.text}
                 text={todo.text}
