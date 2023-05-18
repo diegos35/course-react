@@ -10,15 +10,31 @@ const defaultTodos = [
   {text: 'Cortar Cebolla', completed: true},
   {text: 'Tomar curso', completed: false},
   {text: 'Llorar', completed: false},
-  {text: 'other', completed: false},
+  {text: 'other', completed: true},
 ];
 
 
 function App() {
+   /* state initial */
+   const [todos, setTodos] = React.useState(defaultTodos);
+   const [searchValue, setSearchValue] =  React.useState('');//el actulizador es setSearchValue
+   //console.log('los usuarios buscan todos de '+ searchValue); 
+  
+   const completedTodos = todos.filter(
+      todo => !!todo.completed
+    ).length;
+   const totalTodos = todos.length; 
+
+
   return (
       <>
-        <TodoCounter completed={16} total={25} />
-        <TodoSearch />
+        <TodoCounter 
+          completed={completedTodos}
+          total={totalTodos} />
+        <TodoSearch 
+          searchValue={searchValue} /* send State  */
+          setSearchValue={setSearchValue}
+        />
 
         <TodoList>
           { defaultTodos.map((todo) =>( 
