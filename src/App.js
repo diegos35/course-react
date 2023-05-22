@@ -1,10 +1,10 @@
-import logo from './platzi.webp';
-import { TodoCounter } from './TodoCounter';
-import TodoSearch from './TodoSearch';
-import TodoList from './TodoList/TodoList';
-import { TodoItem } from './TodoItem/TodoItem';
-import { CreateTodoButton } from './Createbutton/CreateTodoButton';
-import React from 'react';
+import logo from "./platzi.webp";
+import { TodoCounter } from "./TodoCounter";
+import TodoSearch from "./TodoSearch";
+import TodoList from "./TodoList/TodoList";
+import { TodoItem } from "./TodoItem/TodoItem";
+import { CreateTodoButton } from "./Createbutton/CreateTodoButton";
+import React from "react";
 
 /* const defaultTodos = [
   {text: 'Cortar Cebolla', completed: true},
@@ -14,96 +14,91 @@ import React from 'react';
 ];
 
 localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
-
 */
 
+/* Create custom Hooks */
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
+  let parseItem;
+
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify([initialValue]));
+    parseItem = initialValue;
+  } else {
+    parseItem = JSON.parse(localStorageItem);
+  }
+  /* state initial */
+  const [item, setItem] = React.useState(parseItem);
+
+  const saveItem = (newItem) => {
+    localStorage.setItem(itemName, JSON.stringify(newItem));
+    setItem(newItem);
+  };
+
+  return [item, saveItem];
+}
 
 function App() {
-  const localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parseTodos;
+  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const [searchValue, setSearchValue] = React.useState(""); //el actulizador es setSearchValue
+  //console.log('los usuarios buscan todos de '+ searchValue);
 
-  if(!localStorageTodos){
-    localStorage.setItem('TODOS_V1', JSON.stringify([]))
-    parseTodos = [];
-  }else{
-    parseTodos = JSON.parse(localStorageTodos);
-  }
-  
-  /* state initial */
-   const [todos, setTodos] = React.useState(parseTodos);
-   const [searchValue, setSearchValue] =  React.useState('');//el actulizador es setSearchValue
-   //console.log('los usuarios buscan todos de '+ searchValue); 
-  
-  const completedTodos = todos.filter(
-      todo => !!todo.completed
-    ).length;
-  const totalTodos = todos.length; 
-  
+  const completedTodos = todos.filter((todo) => !!todo.completed).length;
+  const totalTodos = todos.length;
+
   //estado derivado de todos
-  const searchTodos = todos.filter(
-    (todo) => {
-      const todoText = todo.text.toLocaleLowerCase();
-      const searchText = searchValue.toLocaleLowerCase();
+  const searchTodos = todos.filter((todo) => {
+    const todoText = todo.text.toLocaleLowerCase();
+    const searchText = searchValue.toLocaleLowerCase();
 
-      return todoText.includes(searchText.toLocaleLowerCase());
-    }
-  )
-  console.log(searchTodos)
-  
-  const saveTodos = (newTodos) => {
-    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos))
-    setTodos(newTodos)
-  };
+    return todoText.includes(searchText.toLocaleLowerCase());
+  });
+  console.log(searchTodos);
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text ==  text);
+    const todoIndex = newTodos.findIndex((todo) => todo.text == text);
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    //setTodos(newTodos);
     saveTodos(newTodos);
   };
 
   const onDelete = (text) => {
     const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text ==  text);
-    newTodos.splice(todoIndex,1)
-    //setTodos(newTodos);
+    const todoIndex = newTodos.findIndex((todo) => todo.text == text);
+    newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
-  }
+  };
 
- /*  const onDelete = (text) => {
+  /*  const onDelete = (text) => {
     const newTodos = todos.filter((todo) => todo.text != text);
     setTodos(newTodos);
   }; */
 
   return (
-      <>
-        <TodoCounter 
-          completed={completedTodos}
-          total={totalTodos} />
-        <TodoSearch 
-          searchValue={searchValue} /* send State  */
-          setSearchValue={setSearchValue}
-        />
+    <>
+      <TodoCounter completed={completedTodos} total={totalTodos} />
+      <TodoSearch
+        searchValue={searchValue} /* send State  */
+        setSearchValue={setSearchValue}
+      />
 
-        <TodoList>
-          { searchTodos.map((todo) =>( 
-              <TodoItem 
-                key={todo.text}
-                text={todo.text}
-                completed={todo.completed}
-                onComplete={() => completeTodo(todo.text)} //solo se va a ejecutar cuando suceda el evento
-                onDelete={() =>{onDelete(todo.text)}}
-              />
-          ))
-          }
-        </TodoList>
-      
-        <CreateTodoButton />
+      <TodoList>
+        {searchTodos.map((todo) => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)} //solo se va a ejecutar cuando suceda el evento
+            onDelete={() => {
+              onDelete(todo.text);
+            }}
+          />
+        ))}
+      </TodoList>
+
+      <CreateTodoButton />
     </>
   );
 }
-
-
 
 export default App;
