@@ -6,6 +6,7 @@ import { TodoItem } from "../TodoItem";
 import { CreateTodoButton } from "../Createbutton";
 import React from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { AppUI } from "./AppUI";
 /* const defaultTodos = [
   {text: 'Cortar Cebolla', completed: true},
   {text: 'Tomar curso', completed: false},
@@ -19,7 +20,12 @@ localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
 /* Create custom Hooks */
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchValue] = React.useState(""); //el actulizador es setSearchValue
   //console.log('los usuarios buscan todos de '+ searchValue);
 
@@ -33,7 +39,7 @@ function App() {
 
     return todoText.includes(searchText.toLocaleLowerCase());
   });
-  console.log(searchTodos);
+  //console.log(searchTodos);
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
@@ -56,27 +62,17 @@ function App() {
 
   return (
     <>
-      <TodoCounter completed={completedTodos} total={totalTodos} />
-      <TodoSearch
-        searchValue={searchValue} /* send State  */
+      <AppUI
+        loading={loading}
+        error={error}
+        completedTodos={completedTodos}
+        totalTodos={totalTodos}
+        searchValue={searchValue}
         setSearchValue={setSearchValue}
+        searchTodos={searchTodos}
+        onDelete={onDelete}
+        completeTodo={completeTodo}
       />
-
-      <TodoList>
-        {searchTodos.map((todo) => (
-          <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodo(todo.text)} //solo se va a ejecutar cuando suceda el evento
-            onDelete={() => {
-              onDelete(todo.text);
-            }}
-          />
-        ))}
-      </TodoList>
-
-      <CreateTodoButton />
     </>
   );
 }

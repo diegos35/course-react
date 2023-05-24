@@ -1,24 +1,46 @@
 import React from "react";
 
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  let parseItem;
+  const [item, setItem] = React.useState(initialValue);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
 
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify([initialValue]));
-    parseItem = initialValue;
-  } else {
-    parseItem = JSON.parse(localStorageItem);
-  }
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        console.log("useee");
+        const localStorageItem = localStorage.getItem(itemName);
+
+        let parseItem;
+
+        if (!localStorageItem) {
+          localStorage.setItem(itemName, JSON.stringify([initialValue]));
+          parseItem = initialValue;
+        } else {
+          parseItem = JSON.parse(localStorageItem);
+          setItem(parseItem);
+        }
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(true);
+      }
+    }, 2000);
+  }, []);
+
   /* state initial */
-  const [item, setItem] = React.useState(parseItem);
 
   const saveItem = (newItem) => {
     localStorage.setItem(itemName, JSON.stringify(newItem));
     setItem(newItem);
   };
 
-  return [item, saveItem];
+  return {
+    item,
+    saveItem,
+    loading,
+    error,
+  };
 }
 
 //export nombrado
