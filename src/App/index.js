@@ -1,11 +1,11 @@
-import logo from "./platzi.webp";
-import { TodoCounter } from "./TodoCounter";
-import TodoSearch from "./TodoSearch";
-import TodoList from "./TodoList/TodoList";
-import { TodoItem } from "./TodoItem/TodoItem";
-import { CreateTodoButton } from "./Createbutton/CreateTodoButton";
+import logo from "../platzi.webp";
+import { TodoCounter } from "../TodoCounter";
+import TodoSearch from "../TodoSearch";
+import TodoList from "../TodoList";
+import { TodoItem } from "../TodoItem";
+import { CreateTodoButton } from "../Createbutton";
 import React from "react";
-
+import { useLocalStorage } from "./useLocalStorage";
 /* const defaultTodos = [
   {text: 'Cortar Cebolla', completed: true},
   {text: 'Tomar curso', completed: false},
@@ -17,26 +17,6 @@ localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
 */
 
 /* Create custom Hooks */
-function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  let parseItem;
-
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify([initialValue]));
-    parseItem = initialValue;
-  } else {
-    parseItem = JSON.parse(localStorageItem);
-  }
-  /* state initial */
-  const [item, setItem] = React.useState(parseItem);
-
-  const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem));
-    setItem(newItem);
-  };
-
-  return [item, saveItem];
-}
 
 function App() {
   const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
@@ -57,20 +37,20 @@ function App() {
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text == text);
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
     saveTodos(newTodos);
   };
 
   const onDelete = (text) => {
     const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text == text);
+    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
   };
 
   /*  const onDelete = (text) => {
-    const newTodos = todos.filter((todo) => todo.text != text);
+    const newTodos = todos.filter((todo) => todo.text !== text);
     setTodos(newTodos);
   }; */
 

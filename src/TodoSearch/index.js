@@ -1,12 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from "react";
 import "./TodoSearch.css";
-import searchIcon from "./assets/search-icon.svg";
+import searchIcon from "../assets/search-icon.svg";
 
-
-function TodoSearch({
-    searchValue,
-    setSearchValue
-  }) {
+function TodoSearch({ searchValue, setSearchValue }) {
   return (
     <div className="search-container">
       <input
@@ -17,8 +13,7 @@ function TodoSearch({
       />
       <img className="search-icon" src={searchIcon} alt="search icon" />
     </div>
-  )
+  );
 }
 
-export default TodoSearch
-
+export default TodoSearch;
