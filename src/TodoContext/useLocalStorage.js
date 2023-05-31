@@ -45,3 +45,13 @@ function useLocalStorage(itemName, initialValue) {
 
 //export nombrado
 export { useLocalStorage };
+
+/* const defaultTodos = [
+  {text: 'Cortar Cebolla', completed: true},
+  {text: 'Tomar curso', completed: false},
+  {text: 'Llorar', completed: false},
+  {text: 'other', completed: true},
+];
+
+localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
+*/
