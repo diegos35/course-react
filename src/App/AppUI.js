@@ -6,6 +6,7 @@ import { CreateTodoButton } from "../Createbutton";
 import { TodoContext } from "../TodoContext";
 import React from "react";
 import { Modal } from "../Modal";
+import { TodoForm } from "../TodoForm";
 
 function AppUI() {
   const {
@@ -42,7 +43,11 @@ function AppUI() {
 
       <CreateTodoButton setOpenModal={setOpenModal} />
 
-      {openModal && <Modal>La funcinalidad de agegar TODO</Modal>}
+      {openModal && (
+        <Modal>
+          <TodoForm />
+        </Modal>
+      )}
     </>
   );
 }
