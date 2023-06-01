@@ -33,6 +33,12 @@ function TodoProvider({ children }) {
     saveTodos(newTodos);
   };
 
+  const addTodo = (text) => {
+    const newTodos = [...todos];
+    newTodos.push({ text, completed: false });
+    saveTodos(newTodos); //new array TODOs
+  };
+
   const onDelete = (text) => {
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex((todo) => todo.text === text);
@@ -59,6 +65,7 @@ function TodoProvider({ children }) {
         completeTodo,
         openModal,
         setOpenModal,
+        addTodo,
       }}
     >
       {children}
